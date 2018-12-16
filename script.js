@@ -1,4 +1,5 @@
 const gameBoard = document.querySelector('.game_board'); 
+const gameBlocks = document.getElementsByClassName('game_block');
 const turnMessage = document.querySelector('.turn_message'); 
 const clrBrdBtn = document.querySelector('.clrBrdBtn');
 let turnChecker = 0; 
@@ -19,9 +20,19 @@ const checkTurn = () => {
 	}
 };
 
-const winRowOrColumn = (groupName, classIndex) => {
-	const gameBlocks = document.getElementsByClassName('game_block'); 
+const threeMatches = (p1Arr, p2Arr) => {
+	if(p1Arr.length == 3 || p2Arr.length == 3){
+		if(turnChecker % 2 == 0){
+			turnMessage.textContent = 'Player 2 Wins!!!';
+		}
+		else{
+			turnMessage.textContent = 'Player 1 Wins!!!';
+		}
+		gameBoard.removeEventListener('click', playPiece, false);
+	}
+}
 
+const winRowOrColumn = (groupName, classIndex) => {
 	let matchingBlocks1 = []; 
 	let matchingBlocks2 = []; 
 
@@ -34,27 +45,81 @@ const winRowOrColumn = (groupName, classIndex) => {
 		}
 	}
 
-	if(matchingBlocks1.length == 3 || matchingBlocks2.length == 3){
-		if(turnChecker % 2 == 0){
-			turnMessage.textContent = 'Player 2 Wins!!!';
+	threeMatches(matchingBlocks1, matchingBlocks2); 
+};
+
+const winDiagonal1 = () => {
+	let diag1 = []; 
+	let diag2 = []; 
+
+	for(const block of gameBlocks){
+		if(block.classList[1] == 'groupA' && block.classList[2] == 'group1' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'yugi'){
+			diag1.push(block);
 		}
-		else{
-			turnMessage.textContent = 'Player 1 Wins!!!';
+		else if(block.classList[1] == 'groupA' && block.classList[2] == 'group1' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'marik'){
+			diag2.push(block);
 		}
-		gameBoard.removeEventListener('click', playPiece, false);
+		
+		if(block.classList[1] == 'groupB' && block.classList[2] == 'group2' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'yugi'){
+			diag1.push(block);
+		}
+		else if(block.classList[1] == 'groupB' && block.classList[2] == 'group2' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'marik'){
+			diag2.push(block);
+		}
+
+		if(block.classList[1] == 'groupC' && block.classList[2] == 'group3' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'yugi'){
+			diag1.push(block);
+		}
+		else if(block.classList[1] == 'groupC' && block.classList[2] == 'group3' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'marik'){
+			diag2.push(block);
+		}
 	}
-}
+
+	threeMatches(diag1, diag2);
+
+};
+
+const winDiagonal2 = () => {
+	let diag1 = []; 
+	let diag2 = []; 
+
+	for(const block of gameBlocks){
+		if(block.classList[1] == 'groupA' && block.classList[2] == 'group3' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'yugi'){
+			diag1.push(block);
+		}
+		else if(block.classList[1] == 'groupA' && block.classList[2] == 'group3' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'marik'){
+			diag2.push(block);
+		}
+		
+		if(block.classList[1] == 'groupB' && block.classList[2] == 'group2' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'yugi'){
+			diag1.push(block);
+		}
+		else if(block.classList[1] == 'groupB' && block.classList[2] == 'group2' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'marik'){
+			diag2.push(block);
+		}
+
+		if(block.classList[1] == 'groupC' && block.classList[2] == 'group1' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'yugi'){
+			diag1.push(block);
+		}
+		else if(block.classList[1] == 'groupC' && block.classList[2] == 'group1' && block.classList[3] == 'piecePlayed' && block.firstChild.classList[0] == 'marik'){
+			diag2.push(block);
+		}
+	}
+
+	threeMatches(diag1, diag2);
+
+};
 
 const checkForWinner = (e) => {
-	const gameBlocks = document.getElementsByClassName('game_block'); 
-
 	winRowOrColumn('groupA', 1);	
 	winRowOrColumn('groupB', 1);
 	winRowOrColumn('groupC', 1);
 	winRowOrColumn('group1', 2);
 	winRowOrColumn('group2', 2);
 	winRowOrColumn('group3', 2);
-}
+	winDiagonal1();
+	winDiagonal2();
+};
 
 const playPiece = (e) => {
 	gamePiece = document.createElement('img');
@@ -72,7 +137,7 @@ const playPiece = (e) => {
 
 		checkForWinner(e);
 	}
-} 
+}; 
 
 const playerGo = () => {
 	gameBoard.addEventListener('click', playPiece, false); 
