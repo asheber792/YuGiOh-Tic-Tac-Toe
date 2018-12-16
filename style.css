@@ -1,0 +1,38 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.title{
+	text-align: center;
+	margin: 15px;
+}
+.turn_message{
+	text-align: center;
+	margin: 5px;
+}
+.game_board{
+	width: 600px;
+	height: 600px;
+	margin: 0 auto;
+	margin-bottom: 25px;
+	position: relative;
+	display: grid;
+	grid-template-columns: 200px 200px 200px;
+}
+.game_block{
+	width: 200px;
+	height: 200px;
+	background: url('images/duel_card.png') black;
+	background-size: cover;
+}
+.clrBrdBtn{
+	display: block;
+	width: 75px;
+	height: 25px;
+	margin: 15px auto;
+}
+img{
+	width: 200px;
+	height: 215px;
+	margin-top: -6px;
+}
